@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Move-e - Movie Reviews</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-black text-white antialiased">
+    <div id="app" class="min-h-screen flex items-center justify-center relative bg-gray-900 overflow-hidden">
+        
+        <div id="background-animation" class="absolute inset-0 z-0">
+            <video autoplay muted loop id="background-video">
+                <source src="Phone.mp4" type="video/mp4" media="(max-width: 767px)">
+                <source src="Background.mp4" type="video/mp4" media="(min-width: 768px)">
+            </video>
+             <div class="absolute inset-0 w-full h-full bg-black/70"></div> 
+        </div>
+
+        <div id="login-container" class="relative z-10 w-full max-w-md h-[32rem]" style="perspective: 1500px;">
+            <div id="login-card" class="w-full h-full relative transition-transform duration-700 ease-in-out" style="transform-style: preserve-3d;">
+                
+                <div class="absolute w-full h-full" style="backface-visibility: hidden;">
+                    <div id="role-selection" class="text-center p-8 h-full flex flex-col justify-center">
+                        <div class="initial-selection-box bg-gray-800 bg-opacity-50 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-gray-700">
+                            <h1 class="text-5xl font-bold mb-2" id="login-title">
+                                <span style="--i:1">M</span><span style="--i:2">o</span><span style="--i:3">v</span><span style="--i:4">e</span><span style="--i:5">-</span><span style="--i:6">E</span>
+                            </h1>
+                            <p class="text-lg text-gray-300 mb-12">Movie Reviews</p>
+                            <div class="flex flex-col items-center space-y-4 w-full max-w-xs mx-auto">
+                                <button onclick="showView('user-login')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300">Login as User</button>
+                                <button onclick="showView('new-user')" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-4 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300">New User</button>
+                                <button onclick="showView('guest')" class="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-4 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300">Continue as Guest</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="absolute w-full h-full" style="backface-visibility: hidden; transform: rotateY(180deg);">
+                    <div id="form-container" class="w-full h-full p-8 bg-gray-800 bg-opacity-70 rounded-2xl shadow-2xl form-container relative z-10 flex flex-col justify-center">
+                        <div id="user-login" class="hidden">
+                            <h2 class="text-3xl font-bold text-center text-white">User Login</h2>
+                            <div class="mt-8 space-y-6">
+                                <input type="text" placeholder="User ID" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <input type="password" placeholder="Password" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <button onclick="handleLogin('user')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition-colors duration-300">Login</button>
+                            </div>
+                             <button onclick="showView('role-selection')" class="w-full mt-6 text-center text-gray-400 hover:text-white transition-colors duration-300">Back</button>
+                        </div>
+                        <div id="new-user" class="hidden">
+                            <h2 class="text-3xl font-bold text-center text-white">Create Account</h2>
+                            <div class="mt-8 space-y-4">
+                                <input type="text" placeholder="Full Name" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <input type="number" placeholder="Age" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <input type="email" placeholder="Email Address" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <input type="password" placeholder="Create Password" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <input type="password" placeholder="Confirm Password" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <button onclick="handleLogin('new-user')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition-colors duration-300">Register</button>
+                            </div>
+                             <button onclick="showView('role-selection')" class="w-full mt-6 text-center text-gray-400 hover:text-white transition-colors duration-300">Back</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="loading" class="hidden">
+            <div id="slide-animation-container" class="w-64 h-16 flex justify-center items-center gap-1 overflow-hidden">
+                <div class="slide-panel rounded"></div>
+                <div class="slide-panel rounded"></div>
+                <div class="slide-panel rounded"></div>
+                <div class="slide-panel rounded"></div>
+            </div>
+            <p id="loading-text" class="mt-6 text-2xl font-semibold tracking-widest text-gray-300 opacity-0"></p>
+        </div>
+        
+        <div id="dashboard" class="hidden w-full h-full flex flex-col max-w-screen-2xl mx-auto p-4 md:p-8">
+            <header class="flex justify-between items-center mb-8 flex-shrink-0 relative">
+                <div class="flex items-center space-x-6">
+                    <h1 class="text-4xl font-bold text-yellow-400 cursor-pointer animated-heading" onclick="showDashboardPage('home-page')">Move-E</h1>
+                    <nav class="hidden md:flex items-center space-x-6">
+                        <a href="#" onclick="showDashboardPage('home-page')" class="font-semibold text-gray-300 hover:text-yellow-400 transition-colors">Home</a>
+                        <a href="#" onclick="showDashboardPage('movies-page')" class="font-semibold text-gray-300 hover:text-yellow-400 transition-colors">Movies</a>
+                        <a href="#" onclick="showDashboardPage('tv-shows-page')" class="font-semibold text-gray-300 hover:text-yellow-400 transition-colors">TV Shows</a>
+                        <a href="#" onclick="showDashboardPage('genres-page')" class="font-semibold text-gray-300 hover:text-yellow-400 transition-colors">Genres</a>
+                        <a href="#" onclick="showDashboardPage('profile-page')" class="font-semibold text-gray-300 hover:text-yellow-400 transition-colors">My Profile</a>
+                    </nav>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="showDashboardPage('watchlist-page')" class="hidden md:block font-semibold hover:text-yellow-400">Watchlist</button>
+                    <button onclick="showView('role-selection', true)" class="hidden md:block font-semibold hover:text-yellow-400">Sign In</button>
+                    <img src="https://placehold.co/40x40/f59e0b/000000?text=U" alt="User Profile" class="w-10 h-10 rounded-full border-2 border-yellow-500 cursor-pointer" onclick="showDashboardPage('profile-page')">
+                    <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-300 hover:bg-gray-700 hover:text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+                <div id="mobile-menu" class="hidden absolute top-full right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg z-50">
+                    <nav class="flex flex-col p-2 space-y-1">
+                        <a href="#" onclick="event.preventDefault(); showDashboardPage('home-page'); toggleMobileMenu();" class="font-semibold text-gray-300 hover:text-yellow-400 transition-colors px-3 py-2 rounded-md">Home</a>
+                        <a href="#" onclick="event.preventDefault(); showDashboardPage('movies-page'); toggleMobileMenu();" class="font-semibold text-gray-300 hover:text-yellow-400 transition-colors px-3 py-2 rounded-md">Movies</a>
+                        <a href="#" onclick="event.preventDefault(); showDashboardPage('tv-shows-page'); toggleMobileMenu();" class="font-semibold text-gray-300 hover:text-yellow-400 transition-colors px-3 py-2 rounded-md">TV Shows</a>
+                        <a href="#" onclick="event.preventDefault(); showDashboardPage('genres-page'); toggleMobileMenu();" class="font-semibold text-gray-300 hover:text-yellow-400 transition-colors px-3 py-2 rounded-md">Genres</a>
+                        <a href="#" onclick="event.preventDefault(); showDashboardPage('profile-page'); toggleMobileMenu();" class="font-semibold text-gray-300 hover:text-yellow-400 transition-colors px-3 py-2 rounded-md">My Profile</a>
+                        <a href="#" onclick="event.preventDefault(); showDashboardPage('watchlist-page'); toggleMobileMenu();" class="font-semibold text-gray-300 hover:text-yellow-400 transition-colors px-3 py-2 rounded-md">Watchlist</a>
+                        <a href="#" onclick="event.preventDefault(); showView('role-selection', true); toggleMobileMenu();" class="font-semibold text-gray-300 hover:text-yellow-400 transition-colors px-3 py-2 rounded-md">Sign In</a>
+                    </nav>
+                </div>
+            </header>
+    
+            <div id="dashboard-content" class="flex-grow flex flex-col overflow-y-auto">
+
+                <div id="home-page" class="relative flex-grow flex flex-col items-center justify-center text-center">
+                    <div id="genre-animation-container" class="absolute inset-0 w-full h-full overflow-hidden"></div>
+                    <h1 class="text-6xl md:text-8xl font-black text-yellow-400 mb-6 relative">Move-E</h1>
+                    <p class="text-xl text-gray-300 mb-10 relative">Discover your next favorite movie or show.</p>
+                    <div id="search-container" class="w-full max-w-2xl relative px-4 sm:px-0 z-20">
+                        <input id="search-input" type="text" placeholder="Search for anything..." class="w-full text-lg px-6 py-4 pr-20 bg-gray-800 rounded-full focus:outline-none focus:ring-4 focus:ring-yellow-500/50" autocomplete="off">
+                        <button id="search-button" class="absolute top-0 right-0 h-full px-6 text-gray-400 hover:text-yellow-400 flex items-center justify-center bg-gray-700 rounded-r-full">
+                           <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                        </button>
+                        <div id="search-suggestions" class="hidden absolute top-full left-0 right-0 bg-gray-800 rounded-b-2xl mt-1 z-50 overflow-hidden shadow-lg text-left"></div>
+                    </div>
+
+                     <div id="chart-container" class="w-full max-w-3xl mx-auto mt-8 relative px-4 sm:px-0">
+                         <canvas id="genre-chart"></canvas>
+                     </div>
+
+                    <footer class="absolute bottom-4 left-0 right-0 text-center text-gray-500 text-sm">
+                        <p class="font-bold">© 2025 Move-E | All Rights Reserved by <a href="https://masterdk1340.netlify.app" target="_blank" rel="noopener noreferrer" class="underline hover:text-yellow-400 transition-colors">MasterDK</a></p>
+                    </footer>
+                </div>
+                
+                <div id="details-page" class="hidden">
+                    <button onclick="goBack()" class="mb-6 bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg">← Go Back</button>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-3">
+                            <div id="featured-movie" class="relative rounded-lg overflow-hidden shadow-2xl h-[300px] sm:h-[400px] lg:h-[500px]">
+                                <img id="featured-img" src="https://placehold.co/1200x600/111827/ffffff?text=Loading..." class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 right-0 p-4 md:p-8 flex items-end space-x-6">
+                                    <img id="featured-poster-img" src="https://placehold.co/200x300/4f46e5/ffffff?text=..." class="w-24 md:w-40 rounded-lg shadow-lg z-10 hidden sm:block flex-shrink-0" alt="Movie Poster">
+                                    <div class="min-w-0 flex-grow">
+                                        <div class="flex items-center space-x-4 mb-2">
+                                            <div>
+                                                <h2 id="featured-title" class="text-2xl md:text-4xl font-black">Loading...</h2>
+                                                <p id="featured-description" class="text-sm md:text-lg text-gray-300 mt-2">Fetching data from the cloud.</p>
+                                            </div>
+                                        </div>
+                                        <div id="movie-actions" class="flex items-center mt-4 space-x-2 md:space-x-4">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-10">
+                                <h3 class="text-2xl font-bold mb-4">Reviews for <span id="review-movie-title" class="text-yellow-400">...</span></h3>
+                                <div class="bg-gray-900 p-6 rounded-xl">
+                                    <div class="mb-4">
+                                        <label class="block text-gray-400 mb-2">Your Rating:</label>
+                                        <div id="star-rating-input" class="star-rating-input flex space-x-1 text-2xl">
+                                        </div>
+                                    </div>
+                                    <textarea id="review-textarea" class="w-full p-4 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" rows="4" placeholder="Write your review..."></textarea>
+                                    <button id="submit-review-button" class="mt-4 bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded-lg">Submit Review</button>
+                                    <div id="comments-section" class="mt-6 space-y-4">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="movies-page" class="hidden">
+                    <h2 class="text-3xl font-bold mb-6">All Movies</h2>
+                    <div id="movies-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6"></div>
+                    <div id="movies-pagination" class="pagination-controls flex justify-center items-center space-x-2 mt-8"></div>
+                </div>
+                
+                <div id="tv-shows-page" class="hidden">
+                    <h2 class="text-3xl font-bold mb-6">All TV Shows</h2>
+                    <div id="tv-shows-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6"></div>
+                    <div id="tv-shows-pagination" class="pagination-controls flex justify-center items-center space-x-2 mt-8"></div>
+                </div>
+                
+                <div id="genres-page" class="hidden">
+                    <h2 class="text-3xl font-bold mb-6">Browse by Genre</h2>
+                    <div id="genres-grid" class="flex flex-wrap gap-4 justify-center">
+                    </div>
+                </div>
+
+                <div id="specific-genre-page" class="hidden">
+                    <h2 class="text-3xl font-bold mb-6">Genre: <span id="genre-name" class="text-yellow-400"></span></h2>
+                    <button onclick="showDashboardPage('genres-page')" class="mb-6 bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg">← Back to All Genres</button>
+                    <div id="specific-genre-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+                    </div>
+                </div>
+                
+                <div id="search-results-page" class="hidden">
+                    <h2 class="text-3xl font-bold mb-6">Search Results for "<span id="search-term" class="text-yellow-400"></span>"</h2>
+                     <button onclick="showDashboardPage('home-page')" class="mb-6 bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg">← Back to Home</button>
+                    <div id="search-results-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+                    </div>
+                </div>
+                
+                <div id="watchlist-page" class="hidden">
+                    <h2 class="text-3xl font-bold mb-6">My Watchlist</h2>
+                     <button onclick="showDashboardPage('home-page')" class="mb-6 bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg">← Back to Home</button>
+                    <div id="watchlist-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+                    </div>
+                </div>
+
+                <div id="profile-page" class="hidden">
+                     <h2 class="text-3xl font-bold mb-6">My Profile</h2>
+                     <div class="bg-gray-900 p-8 rounded-xl max-w-lg mx-auto">
+                         <div class="relative">
+                             <div id="profile-view">
+                                 <div class="flex flex-col sm:flex-row items-center text-center sm:text-left space-y-4 sm:space-y-0 sm:space-x-6">
+                                     <img id="profile-pic" src="https://placehold.co/100x100/f59e0b/000000?text=U" alt="User Profile" class="w-24 h-24 rounded-full border-4 border-yellow-500">
+                                     <div>
+                                         <h3 id="profile-username" class="text-2xl font-bold">Username</h3>
+                                         <p id="profile-email" class="text-gray-400">user@master.com</p>
+                                     </div>
+                                 </div>
+                                 <button onclick="toggleProfileEdit(true)" class="absolute top-0 right-0 p-2 text-gray-400 hover:text-white" title="Edit Profile">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L16.732 3.732z"></path></svg>
+                                 </button>
+                             </div>
+                             <div id="profile-edit" class="hidden">
+                                 <div class="space-y-4">
+                                     <div>
+                                         <label for="username-input" class="block text-sm font-medium text-gray-300">Username</label>
+                                         <input type="text" id="username-input" class="mt-1 w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                     </div>
+                                     <div>
+                                         <label for="profile-pic-input" class="block text-sm font-medium text-gray-300">Profile Picture URL</label>
+                                         <input type="text" id="profile-pic-input" class="mt-1 w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                     </div>
+                                     <div class="flex justify-end space-x-4">
+                                         <button onclick="toggleProfileEdit(false)" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg">Cancel</button>
+                                         <button onclick="saveProfile()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg">Save</button>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="mt-8 border-t border-gray-700 pt-8">
+                             <h4 class="text-xl font-semibold mb-4">Settings</h4>
+                             <p class="text-gray-500">More settings coming soon.</p>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
