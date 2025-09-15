@@ -25,7 +25,7 @@ This is a **Movie Review Website** where users can:
 
 🔗 **Live Testing Link:**  https://move-e.netlify.app
 
-🔗 **Alternate Live Testing Link:**  https://move-e.netlify.app
+🔗 **Alternate Live Testing Link:**  https://iamsinmaster.github.io/IT-Developer-/
 
 ---  
 💡 *This project is part of my Internship Journey, showcasing my skills in Web Development.*  
