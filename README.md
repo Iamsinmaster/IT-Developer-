@@ -23,7 +23,7 @@ This is a **Movie Review Website** where users can:
 - **Start Date:** 15th July 2025  
 - **End Date:** 15th September 2025  
 
-🔗 **Live Testing Link:**  https://iamsinmaster.github.io/IT-Developer
+🔗 **Live Testing Link:**  https://iamsinmaster.github.io/IT-Developer-
 
 🔗 **Alternate Live Testing Link:**  https://move-e.netlify.app
 
